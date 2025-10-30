@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Benfeitoria, Usuario } from '../types';
-import { getBenfeitoriasByUsuario, addBenfeitoria, updateBenfeitoria, deleteBenfeitoria } from '../services/database';
+import { getBenfeitoriasByUsuario, addBenfeitoria, updateBenfeitoria, deleteBenfeitoria } from '../database';
 import ScreenWrapper from '../components/ScreenWrapper';
 import { formatDate, formatCurrency } from '../utils/calculations';
 import Icon from '../components/Icon';
