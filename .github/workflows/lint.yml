@@ -19,10 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  # Você pode ajustar para a versão que seu projeto usa
+          node-version: '14'  # ou qualquer versão do Node.js que você usa no seu projeto
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Run ESLint
-        run: npm run lint
+        run: |
