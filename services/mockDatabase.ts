@@ -1,102 +1,131 @@
-import { Usuario, Propriedade, Colheita, Benfeitoria, Safra } from '../types';
+// services/mockDatabase.ts
 
-// === Dados em memória ===
-let usuarios: Usuario[] = [];
-let propriedades: Propriedade[] = [];
-let colheitas: Colheita[] = [];
-let benfeitorias: Benfeitoria[] = [];
-let safras: Safra[] = [];
+// Tipos básicos (ajuste conforme seu modelo real)
+export interface Usuario {
+  id: string;
+  nome: string;
+}
 
-// === Usuários ===
+export interface Propriedade {
+  id: string;
+  usuarioId: string;
+  nome: string;
+}
+
+export interface Colheita {
+  id: string;
+  safraId: string;
+  quantidade: number;
+}
+
+export interface Benfeitoria {
+  id: string;
+  usuarioId: string;
+  descricao: string;
+}
+
+export interface Safra {
+  id: string;
+  usuarioId: string;
+  ano: number;
+}
+
+// ----- Usuários -----
+const usuarios: Usuario[] = [];
+
 export const addUsuario = (usuario: Usuario) => {
-    if (usuarios.some(u => u.nome_de_usuario === usuario.nome_de_usuario || (u.email && u.email === usuario.email) || (u.cpf && u.cpf === usuario.cpf))) {
-        return { error: 'Usuário já cadastrado' };
-    }
-    usuario.id = usuarios.length + 1;
-    usuarios.push(usuario);
-    return usuario;
+  usuarios.push(usuario);
 };
 
-export const getUsuarios = () => [...usuarios];
-
-export const updateUsuario = (id: number, updates: Partial<Usuario>) => {
-    const index = usuarios.findIndex(u => u.id === id);
-    if (index === -1) return null;
-    usuarios[index] = { ...usuarios[index], ...updates };
-    return usuarios[index];
+export const getUsuarios = (): Usuario[] => {
+  return usuarios;
 };
 
-// === Propriedades ===
-export const addPropriedade = (prop: Omit<Propriedade, 'id'>) => {
-    const newProp = { ...prop, id: propriedades.length + 1 };
-    propriedades.push(newProp);
-    return newProp;
+export const updateUsuario = (usuario: Usuario) => {
+  const index = usuarios.findIndex(u => u.id === usuario.id);
+  if (index !== -1) usuarios[index] = usuario;
 };
 
-export const getPropriedadesByUsuario = (usuario: Usuario) => {
-    return propriedades.filter(p => p.usuario_id === usuario.id);
+// ----- Propriedades -----
+const propriedades: Propriedade[] = [];
+
+export const addPropriedade = (prop: Propriedade) => {
+  propriedades.push(prop);
 };
 
-export const updatePropriedade = (id: number, updates: Partial<Propriedade>) => {
-    const index = propriedades.findIndex(p => p.id === id);
-    if (index === -1) return null;
-    propriedades[index] = { ...propriedades[index], ...updates };
-    return propriedades[index];
+export const getPropriedadesByUsuario = (usuarioId: string): Propriedade[] => {
+  return propriedades.filter(p => p.usuarioId === usuarioId);
 };
 
-export const deletePropriedade = (id: number) => {
-    propriedades = propriedades.filter(p => p.id !== id);
+export const updatePropriedade = (prop: Propriedade) => {
+  const index = propriedades.findIndex(p => p.id === prop.id);
+  if (index !== -1) propriedades[index] = prop;
 };
 
-// === Colheitas ===
-export const addColheita = (c: Omit<Colheita, 'id'>) => {
-    const newC = { ...c, id: colheitas.length + 1 };
-    colheitas.push(newC);
-    return newC;
+export const deletePropriedade = (id: string) => {
+  const index = propriedades.findIndex(p => p.id === id);
+  if (index !== -1) propriedades.splice(index, 1);
 };
 
-export const getColheitasBySafra = (safraId: number) => {
-    return colheitas.filter(c => c.safra_id === safraId);
+// ----- Colheitas -----
+const colheitas: Colheita[] = [];
+
+export const addColheita = (c: Colheita) => {
+  colheitas.push(c);
 };
 
-export const updateColheita = (id: number, updates: Partial<Colheita>) => {
-    const index = colheitas.findIndex(c => c.id === id);
-    if (index === -1) return null;
-    colheitas[index] = { ...colheitas[index], ...updates };
-    return colheitas[index];
+export const getColheitasBySafra = (safraId: string): Colheita[] => {
+  return colheitas.filter(c => c.safraId === safraId);
 };
 
-export const deleteColheita = (id: number) => {
-    colheitas = colheitas.filter(c => c.id !== id);
+export const updateColheita = (c: Colheita) => {
+  const index = colheitas.findIndex(col => col.id === c.id);
+  if (index !== -1) colheitas[index] = c;
 };
 
-// === Benfeitorias ===
-export const addBenfeitoria = (b: Omit<Benfeitoria, 'id'>) => {
-    const newB = { ...b, id: benfeitorias.length + 1 };
-    benfeitorias.push(newB);
-    return newB;
+export const deleteColheita = (id: string) => {
+  const index = colheitas.findIndex(c => c.id === id);
+  if (index !== -1) colheitas.splice(index, 1);
 };
 
-export const getBenfeitoriasByUsuario = (usuario: Usuario) => {
-    return benfeitorias.filter(b => b.usuario_id === usuario.id);
+// ----- Benfeitorias -----
+const benfeitorias: Benfeitoria[] = [];
+
+export const addBenfeitoria = (b: Benfeitoria) => {
+  benfeitorias.push(b);
 };
 
-export const updateBenfeitoria = (id: number, updates: Partial<Benfeitoria>) => {
-    const index = benfeitorias.findIndex(b => b.id === id);
-    if (index === -1) return null;
-    benfeitorias[index] = { ...benfeitorias[index], ...updates };
-    return benfeitorias[index];
+export const getBenfeitoriasByUsuario = (usuarioId: string): Benfeitoria[] => {
+  return benfeitorias.filter(b => b.usuarioId === usuarioId);
 };
 
-export const deleteBenfeitoria = (id: number) => {
-    benfeitorias = benfeitorias.filter(b => b.id !== id);
+export const updateBenfeitoria = (b: Benfeitoria) => {
+  const index = benfeitorias.findIndex(bf => bf.id === b.id);
+  if (index !== -1) benfeitorias[index] = b;
 };
 
-// === Safras ===
-export const addSafra = (s: Omit<Safra, 'id'>) => {
-    const newS = { ...s, id: safras.length + 1 };
-    safras.push(newS);
-    return newS;
+export const deleteBenfeitoria = (id: string) => {
+  const index = benfeitorias.findIndex(b => b.id === id);
+  if (index !== -1) benfeitorias.splice(index, 1);
 };
 
-export const getSafrasByUsuario = (usuario: Usuar
+// ----- Safras -----
+const safras: Safra[] = [];
+
+export const addSafra = (s: Safra) => {
+  safras.push(s);
+};
+
+export const getSafrasByUsuario = (usuarioId: string): Safra[] => {
+  return safras.filter(s => s.usuarioId === usuarioId);
+};
+
+export const updateSafra = (s: Safra) => {
+  const index = safras.findIndex(sf => sf.id === s.id);
+  if (index !== -1) safras[index] = s;
+};
+
+export const deleteSafra = (id: string) => {
+  const index = safras.findIndex(s => s.id === id);
+  if (index !== -1) safras.splice(index, 1);
+};
