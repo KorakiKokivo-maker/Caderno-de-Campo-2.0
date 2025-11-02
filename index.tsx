@@ -1,21 +1,20 @@
+// polyfill para toSorted (copie exatamente isso)
 if (!Array.prototype.toSorted) {
-  // Se o JavaScript não tiver o método toSorted...
-
   Object.defineProperty(Array.prototype, 'toSorted', {
-    // Define para o Array o método 'toSorted' igual a:
-
-    value: function(compareFn?: (a: any, b: any) => number) {
-      // Função que recebe uma função para comparar elementos (opcional)
-
+    value: function(compareFn) {
       return [...this].sort(compareFn);
-      // Cria uma cópia do array atual e usa o sort tradicional para ordenar
     },
-
     writable: true,
     configurable: true,
-    // Permite mexer e modificar essa função depois, se quiser
   });
 }
+
+// Agora as outras importações do seu app normalmente
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+// restante do código...
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { initializeApp } from "firebase/app";
