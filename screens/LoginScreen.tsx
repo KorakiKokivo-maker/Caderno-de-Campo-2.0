@@ -33,11 +33,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigateToCadastro
       <div className="w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <div className="text-center">
           {/* Substituição do ícone aqui ↓ */}
-          <img
-            src="/assets/ícone cc (2).png"
-            alt="Logo Caderno de Campo"
-            className="w-24 h-24 mx-auto"
-          />
+         <img
+           src="/assents/icone cc (2).png"
+           alt="Logo Caderno de Campo"
+           className="w-24 h-24 mx-auto"
+         />
           <h2 className="mt-4 text-3xl font-extrabold text-gray-900 dark:text-white">
             Caderno de Campo
           </h2>
