@@ -1,3 +1,4 @@
+import './index.css';
 import './polyfill';
 // restante do código do index.tsx...
 // Agora as outras importações do seu app normalmente
