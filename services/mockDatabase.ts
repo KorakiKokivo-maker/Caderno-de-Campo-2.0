@@ -1,131 +1,195 @@
-// services/mockDatabase.ts
+// src/mockDatabase.ts
 
-// Tipos básicos (ajuste conforme seu modelo real)
-export interface Usuario {
-  id: string;
-  nome: string;
+import type { Usuario, Propriedade, Safra, OperacaoCampo, Custo, Colheita, Maquinario, Benfeitoria } from './types';
+
+// Dados mock com IDs como números (sem aspas)
+export const mockDatabase = {
+  usuarios: [
+    {
+      id: 1,
+      nome: 'João',
+      nome_de_usuario: 'joao',
+      senha: '123',
+      perfil: 'Produtor',
+      cpf: '12345678900',
+      email: 'joao@email.com',
+      foto_url: null,
+    },
+    {
+      id: 2,
+      nome: 'Ana Silva',
+      nome_de_usuario: 'ana',
+      senha: '123',
+      perfil: 'Produtor',
+      cpf: '98765432100',
+      email: 'ana@email.com',
+      foto_url: null,
+    },
+  ] as Usuario[],
+  propriedades: [
+    {
+      id: 1,
+      usuario_id: 1,
+      nome: 'Fazenda Boa Vista',
+      localizacao: 'Campinas, SP',
+      latitude: undefined,
+      longitude: undefined,
+      valor_financiado: undefined,
+      num_parcelas: undefined,
+      parcelas_pagas: undefined,
+      data_inicio_pagamento: undefined,
+    },
+    {
+      id: 2,
+      usuario_id: 2,
+      nome: 'Sítio Verde',
+      localizacao: 'Ituverava, SP',
+      latitude: undefined,
+      longitude: undefined,
+      valor_financiado: undefined,
+      num_parcelas: undefined,
+      parcelas_pagas: undefined,
+      data_inicio_pagamento: undefined,
+    },
+  ] as Propriedade[],
+  safras: [
+    {
+      id: 1,
+      propriedade_id: 1,
+      usuario_id: 1,
+      nome: 'Safra 2023/2024',
+      area_ha: 50,
+      data_inicio: '2023-09-01',
+      data_fim: '2024-01-15',
+      ativa: true,
+    },
+    {
+      id: 2,
+      propriedade_id: 2,
+      usuario_id: 2,
+      nome: 'Safra 2023',
+      area_ha: 30,
+      data_inicio: '2023-10-05',
+      data_fim: '2024-02-10',
+      ativa: true,
+    },
+  ] as Safra[],
+  operacoesCampo: [
+    {
+      id: 1,
+      safra_id: 1,
+      data: '2023-09-10',
+      tipo: 'Plantio',
+      custo: 800,
+      condicoes_climaticas: {},
+    },
+    {
+      id: 2,
+      safra_id: 1,
+      data: '2023-10-03',
+      tipo: 'Defensivo',
+      custo: 2500,
+      condicoes_climaticas: { temperatura: 30, umidade: 80, vento: 'Leve', clima: 'Ensolarado' },
+    },
+    {
+      id: 3,
+      safra_id: 2,
+      data: '2023-10-10',
+      tipo: 'Tratamento Adicional',
+      custo: 900,
+      condicoes_climaticas: {},
+    },
+  ] as OperacaoCampo[],
+  custos: [
+    {
+      id: 1,
+      usuario_id: 1,
+      nome: 'Diesel',
+      valor: 2500,
+    },
+    {
+      id: 2,
+      usuario_id: 1,
+      nome: 'Mão de Obra',
+      valor: 5600,
+    },
+  ] as Custo[],
+  colheitas: [
+    {
+      id: 1,
+      safra_id: 1,
+      data: '2024-01-10',
+      quantidade: 10000,
+      unidade: 'kg',
+      preco_unitario: 1.2,
+      responsavel: 'João',
+    },
+  ] as Colheita[],
+  maquinarios: [
+    {
+      id: 1,
+      usuario_id: 1,
+      nome: 'Trator X',
+      descricao: 'Trator 4x4',
+      valor_total: 100000,
+      num_parcelas: 12,
+      parcelas_pagas: 6,
+      vida_util_anos: 5,
+    },
+  ] as Maquinario[],
+  benfeitorias: [
+    {
+      id: 1,
+      usuario_id: 1,
+      nome: 'Silo',
+      descricao: 'Silo para armazenar grãos',
+      valor_total: 150000,
+      num_parcelas: 12,
+      parcelas_pagas: 3,
+      data_inicio_pagamento: '2023-01-01',
+    },
+  ] as Benfeitoria[],
+};
+
+// Funções para buscar dados ajustadas para receber ids do tipo number
+export function getUsuarios() {
+  return mockDatabase.usuarios;
 }
 
-export interface Propriedade {
-  id: string;
-  usuarioId: string;
-  nome: string;
+export function getUsuarioByNomeUsuarioSenha(nome_de_usuario: string, senha: string) {
+  return mockDatabase.usuarios.find(
+    (u) => u.nome_de_usuario === nome_de_usuario && u.senha === senha
+  );
 }
 
-export interface Colheita {
-  id: string;
-  safraId: string;
-  quantidade: number;
+export function getSafrasByUsuario(usuarioId: number) {
+  return mockDatabase.safras.filter((s) => s.usuario_id === usuarioId);
 }
 
-export interface Benfeitoria {
-  id: string;
-  usuarioId: string;
-  descricao: string;
+export function getPropriedadesByUsuario(usuarioId: number) {
+  return mockDatabase.propriedades.filter((p) => p.usuario_id === usuarioId);
 }
 
-export interface Safra {
-  id: string;
-  usuarioId: string;
-  ano: number;
+export function getPropriedadeById(propriedadeId: number) {
+  return mockDatabase.propriedades.find((p) => p.id === propriedadeId);
 }
 
-// ----- Usuários -----
-const usuarios: Usuario[] = [];
+export function getOperacoesBySafra(safraId: number) {
+  return mockDatabase.operacoesCampo.filter((o) => o.safra_id === safraId);
+}
 
-export const addUsuario = (usuario: Usuario) => {
-  usuarios.push(usuario);
-};
+export function getCustosByUsuario(usuarioId: number) {
+  return mockDatabase.custos.filter((c) => c.usuario_id === usuarioId);
+}
 
-export const getUsuarios = (): Usuario[] => {
-  return usuarios;
-};
+export function getColheitasBySafra(safraId: number) {
+  return mockDatabase.colheitas.filter((c) => c.safra_id === safraId);
+}
 
-export const updateUsuario = (usuario: Usuario) => {
-  const index = usuarios.findIndex(u => u.id === usuario.id);
-  if (index !== -1) usuarios[index] = usuario;
-};
+export function getMaquinariosByUsuario(usuarioId: number) {
+  return mockDatabase.maquinarios.filter((m) => m.usuario_id === usuarioId);
+}
 
-// ----- Propriedades -----
-const propriedades: Propriedade[] = [];
-
-export const addPropriedade = (prop: Propriedade) => {
-  propriedades.push(prop);
-};
-
-export const getPropriedadesByUsuario = (usuarioId: string): Propriedade[] => {
-  return propriedades.filter(p => p.usuarioId === usuarioId);
-};
-
-export const updatePropriedade = (prop: Propriedade) => {
-  const index = propriedades.findIndex(p => p.id === prop.id);
-  if (index !== -1) propriedades[index] = prop;
-};
-
-export const deletePropriedade = (id: string) => {
-  const index = propriedades.findIndex(p => p.id === id);
-  if (index !== -1) propriedades.splice(index, 1);
-};
-
-// ----- Colheitas -----
-const colheitas: Colheita[] = [];
-
-export const addColheita = (c: Colheita) => {
-  colheitas.push(c);
-};
-
-export const getColheitasBySafra = (safraId: string): Colheita[] => {
-  return colheitas.filter(c => c.safraId === safraId);
-};
-
-export const updateColheita = (c: Colheita) => {
-  const index = colheitas.findIndex(col => col.id === c.id);
-  if (index !== -1) colheitas[index] = c;
-};
-
-export const deleteColheita = (id: string) => {
-  const index = colheitas.findIndex(c => c.id === id);
-  if (index !== -1) colheitas.splice(index, 1);
-};
-
-// ----- Benfeitorias -----
-const benfeitorias: Benfeitoria[] = [];
-
-export const addBenfeitoria = (b: Benfeitoria) => {
-  benfeitorias.push(b);
-};
-
-export const getBenfeitoriasByUsuario = (usuarioId: string): Benfeitoria[] => {
-  return benfeitorias.filter(b => b.usuarioId === usuarioId);
-};
-
-export const updateBenfeitoria = (b: Benfeitoria) => {
-  const index = benfeitorias.findIndex(bf => bf.id === b.id);
-  if (index !== -1) benfeitorias[index] = b;
-};
-
-export const deleteBenfeitoria = (id: string) => {
-  const index = benfeitorias.findIndex(b => b.id === id);
-  if (index !== -1) benfeitorias.splice(index, 1);
-};
-
-// ----- Safras -----
-const safras: Safra[] = [];
-
-export const addSafra = (s: Safra) => {
-  safras.push(s);
-};
-
-export const getSafrasByUsuario = (usuarioId: string): Safra[] => {
-  return safras.filter(s => s.usuarioId === usuarioId);
-};
-
-export const updateSafra = (s: Safra) => {
-  const index = safras.findIndex(sf => sf.id === s.id);
-  if (index !== -1) safras[index] = s;
-};
-
-export const deleteSafra = (id: string) => {
-  const index = safras.findIndex(s => s.id === id);
-  if (index !== -1) safras.splice(index, 1);
-};
+export function getBenfeitoriasByUsuario(usuarioId: number) {
+  return mockDatabase.benfeitorias.filter((b) => b.usuario_id === usuarioId);
+}
