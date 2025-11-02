@@ -1,3 +1,21 @@
+if (!Array.prototype.toSorted) {
+  // Se o JavaScript não tiver o método toSorted...
+
+  Object.defineProperty(Array.prototype, 'toSorted', {
+    // Define para o Array o método 'toSorted' igual a:
+
+    value: function(compareFn?: (a: any, b: any) => number) {
+      // Função que recebe uma função para comparar elementos (opcional)
+
+      return [...this].sort(compareFn);
+      // Cria uma cópia do array atual e usa o sort tradicional para ordenar
+    },
+
+    writable: true,
+    configurable: true,
+    // Permite mexer e modificar essa função depois, se quiser
+  });
+}
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { initializeApp } from "firebase/app";
