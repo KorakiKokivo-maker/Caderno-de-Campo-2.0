@@ -5,20 +5,18 @@ import { initializeApp } from "firebase/app";
 import "./index.css";
 import App from "./App";
 
-// Sua configuração do Firebase (ajuste as chaves conforme seu projeto)
+// Config Firebase usando variáveis ambiente
 const firebaseConfig = {
-  apiKey: "sua_apiKey_aqui",
-  authDomain: "seu_authDomain_aqui",
-  projectId: "seu_projectId_aqui",
-  storageBucket: "seu_storageBucket_aqui",
-  messagingSenderId: "seu_messagingSenderId_aqui",
-  appId: "seu_appId_aqui",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Inicializa o Firebase
 initializeApp(firebaseConfig);
 
-// Inicializa o ReactDOM raiz e renderiza o app
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <App />
