@@ -1,14 +1,5 @@
-// polyfill para toSorted (copie exatamente isso)
-if (!Array.prototype.toSorted) {
-  Object.defineProperty(Array.prototype, 'toSorted', {
-    value: function(compareFn) {
-      return [...this].sort(compareFn);
-    },
-    writable: true,
-    configurable: true,
-  });
-}
-
+import './polyfill';
+// restante do código do index.tsx...
 // Agora as outras importações do seu app normalmente
 import React from 'react';
 import ReactDOM from 'react-dom/client';
