@@ -5,7 +5,6 @@ import { initializeApp } from "firebase/app";
 import "./index.css";
 import App from "./App";
 
-// Config Firebase usando variáveis ambiente
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
